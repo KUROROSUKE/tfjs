@@ -1,1 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+  </head>
 
+  <body>
+    <input type="file" id="file_input" onchange="display()">
+    <input type="button" id="button" onclick="run()">
+    <img src="image" id="image" alt="選択した画像">
+    <div><img src="sample_5.png" id="input_image"></div>
+    <div>Prediction: <span id="pred"></span></div>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite/dist/tf-tflite.min.js"></script>
+
+    <!-- Place your code in the script tag below. You can also use an external .js file -->
+    <script>
+        const imageInput = document.getElementById('file-input');
+        const imagePreview = document.getElementById('image');
+        
+        imageInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.src = "";
+            }
+        });
+
+        async function run(){
+            const model = await tflite.loadTFLiteModel('./model.tflite');
+            const x = tf.browser.fromPixels(document.getElementById('input_image'), 1).reshape([1, 28, 28, 1]).div(tf.scalar(255));
+            const y = model.predict(x);
+            document.getElementById('pred').textContent = y.reshape([-1]).argMax().arraySync();
+        }
+
+        async function resize(){
+
+        }
+    </script>
+  </body>
+</html>
