@@ -18,6 +18,7 @@
       const fileInput = document.getElementById('file-input');
       const previewImage = document.getElementById('image-preview');
       const resultElement = document.getElementById('pred'); // 結果表示の要素
+      const button = document.getElementById('button'); // ボタン要素
 
       fileInput.addEventListener('change', function(event) {
         const file = event.target.files[0];
@@ -33,6 +34,7 @@
 
       async function run() {
         resultElement.textContent = '推論中...'; // 推論中のメッセージを表示
+        button.disabled = true; // ボタンを無効化して非表示にする
         const model = await tflite.loadTFLiteModel('https://kurorosuke.github.io/tfjs/model.tflite'); // モデルのURLを指定
         const img = document.getElementById('image-preview');
         const tensor = tf.browser.fromPixels(img)
@@ -48,6 +50,7 @@
         resultElement.innerHTML = `
           <p>分類結果: ${list[predictedClass]}</p>
         `;
+        button.disabled = false; // 推論が終了したらボタンを再び有効にする
       }
     </script>
   </body>
