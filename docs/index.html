@@ -15,21 +15,20 @@
     <input type="button" id="button" onclick="run()">
 
     <script>
-        function previewImage(){
-            var reader = new FileReader();
-
-            reader.onload = function () {
-                sample2 = ("image-preview");
-                img = new Image();
-                img.src = this.result;
-                img.onload = function() {
-                    sample2.css("width", img.naturalWidth);
-                    sample2.css("height", img.naturalHeight);
-                }
-                sample2.css("background", "url(" + this.result + ") center center / contain no-repeat");
-            }
-            reader.readAsDataURL(target.files[0]);
-        }
+      const fileInput = document.getElementById('file-input');
+      const previewImage = document.getElementById('image-preview');
+  
+      fileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            previewImage.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
+        };
+      })
 
         async function run(){
             const model = await tflite.loadTFLiteModel('./model.tflite');
