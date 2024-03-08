@@ -30,12 +30,12 @@
         };
       })
 
-        async function run(){
-            const model = await tflite.loadTFLiteModel('./model.tflite');
-            const x = tf.browser.fromPixels(document.getElementById('image'), 1).reshape([1, 28, 28, 1]).div(tf.scalar(255));
-            const y = model.predict(x);
-            document.getElementById('pred').textContent = y.reshape([-1]).argMax().arraySync();
-        }
+      async function run() {
+        const model = await tflite.loadTFLiteModel('./model.tflite');
+        const x = tf.browser.fromPixels(document.getElementById('image-preview')).reshape([1, 28, 28, 1]).div(tf.scalar(255));
+        const y = model.predict(x);
+        document.getElementById('pred').textContent = y.reshape([-1]).argMax().arraySync();
+      }
 
         async function resize(){
 
