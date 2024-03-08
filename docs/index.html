@@ -9,22 +9,38 @@
   </head>
 
   <body>
-    <p>更新１２</p>
-    <input type="file" id="file-input">
+    <p>更新２</p>
+    <input type="file" id="file-input" onchange="previewImage()">
     <img id="image-preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc;">
     <input type="button" id="button" onclick="run()">
 
     <script>
-      async function run(){
-          const model = await tflite.loadTFLiteModel('./model.tflite');
-          const x = tf.browser.fromPixels(document.getElementById('image'), 1).reshape([1, 28, 28, 1]).div(tf.scalar(255));
-          const y = model.predict(x);
-          document.getElementById('pred').textContent = y.reshape([-1]).argMax().arraySync();
-      }
+        function OutputImage(target){
+            var reader = new FileReader();
 
-      async function resize(){
+            reader.onload = function () {
+                sample2 = ("image-preview");
+                img = new Image();
+                img.src = this.result;
+                img.onload = function() {
+                    sample2.css("width", img.naturalWidth);
+                    sample2.css("height", img.naturalHeight);
+                }
+                sample2.css("background", "url(" + this.result + ") center center / contain no-repeat");
+            }
+            reader.readAsDataURL(target.files[0]);
+        }
 
-      }
+        async function run(){
+            const model = await tflite.loadTFLiteModel('./model.tflite');
+            const x = tf.browser.fromPixels(document.getElementById('image'), 1).reshape([1, 28, 28, 1]).div(tf.scalar(255));
+            const y = model.predict(x);
+            document.getElementById('pred').textContent = y.reshape([-1]).argMax().arraySync();
+        }
+
+        async function resize(){
+
+        }
     </script>
   </body>
 </html>
