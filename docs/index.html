@@ -15,24 +15,24 @@
     <input type="button" id="button" onclick="run()">
 
     <script>
-        $("#file-input").on("change", function (e) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $("#image").attr("src", e.target.result);
-            }
-            reader.readAsDataURL(e.target.files[0]);
-        });
+      ("#file-input").on("change", function (e) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+              ("#image").attr("src", e.target.result);
+          }
+          reader.readAsDataURL(e.target.files[0]);
+      });
 
-        async function run(){
-            const model = await tflite.loadTFLiteModel('./model.tflite');
-            const x = tf.browser.fromPixels(document.getElementById('image'), 1).reshape([1, 28, 28, 1]).div(tf.scalar(255));
-            const y = model.predict(x);
-            document.getElementById('pred').textContent = y.reshape([-1]).argMax().arraySync();
-        }
+      async function run(){
+          const model = await tflite.loadTFLiteModel('./model.tflite');
+          const x = tf.browser.fromPixels(document.getElementById('image'), 1).reshape([1, 28, 28, 1]).div(tf.scalar(255));
+          const y = model.predict(x);
+          document.getElementById('pred').textContent = y.reshape([-1]).argMax().arraySync();
+      }
 
-        async function resize(){
+      async function resize(){
 
-        }
+      }
     </script>
   </body>
 </html>
