@@ -9,34 +9,19 @@
   </head>
 
   <body>
-    <p>更新６</p>
-    <input type="file" id="image" onchange="previewImage()">
+    <p>更新７</p>
+    <input type="file" id="image">
     <img id="image-preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc;">
     <input type="button" id="button" onclick="run()">
 
     <script>
-
-        function previewImage() {
-            var preview = document.getElementById('image-preview');
-            var file = document.getElementById('image').files[0];
-            var reader = new FileReader();
-          
-            reader.onloadend = function () {
-              preview.innerHTML = '';
-              var img = document.createElement('img');
-              img.src = reader.result;
-              img.style.maxWidth = '100%';
-              img.style.maxHeight = '100%';
-              img.style.border = '1px solid #ccc';
-              preview.appendChild(img);
-            }
-          
-            if (file) {
-              reader.readAsDataURL(file);
-            } else {
-              preview.innerHTML = 'No image selected';
-            }
-          }
+        ("image").on("change", function (e) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("image-preview").attr("src", e.target.result);
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            });
 
         async function run(){
             const model = await tflite.loadTFLiteModel('./model.tflite');
