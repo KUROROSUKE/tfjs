@@ -9,7 +9,7 @@
   </head>
 
   <body>
-    <p>更新９</p>
+    <p>更新１４</p>
     <input type="file" id="file-input">
     <img id="image-preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc;">
     <input value="Class" type="button" id="button" onclick="run()">
@@ -43,8 +43,9 @@
         const confidence = y.max().arraySync()[0];
         const confidencePercentage = Math.round(confidence * 100 * 100) / 100; // 2桁の精度で切り捨て
 
+        const list = ["ある","ない"]
         document.getElementById('pred').innerHTML = `
-          <p>Predicted class(NO.1): ${predictedClass}</p>
+          <p>Predicted class(NO.1): ${list[predictedClass]}</p>
           <p>Confidence(NO.1): ${confidencePercentage} %</p>
         `;
       }
