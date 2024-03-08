@@ -43,9 +43,9 @@
         const confidence = y.max().arraySync()[0];
         const confidencePercentage = Math.round(confidence * 100 * 100) / 100; // 2桁の精度で切り捨て
 
-        const list = ["ある","ない"];
+        const list = ["いる","いない"];
         document.getElementById('pred').innerHTML = `
-          <p>Predicted class(NO.1): ${list[predictedClass]}</p>
+          <p>分類結果: ${list[predictedClass]}</p>
         `;
       }
     </script>
