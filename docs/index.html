@@ -9,7 +9,7 @@
   </head>
 
   <body>
-    <p>更新６</p>
+    <p>更新７</p>
     <input type="file" id="file-input">
     <img id="image-preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc;">
     <input config="Class" type="button" id="button" onclick="run()">
@@ -39,7 +39,14 @@
                           .div(tf.scalar(255.0))  // 正規化
                           .expandDims();  // バッチ次元を追加
         const y = model.predict(tensor);
-        document.getElementById('pred').textContent = y.reshape([-1]).argMax().arraySync();
+        const predictedClass = y.reshape([-1]).argMax().arraySync();
+        const confidence = y.max().arraySync()[0];
+        const confidencePercentage = Math.round(confidence * 100 * 100) / 100; // 2桁の精度で切り捨て
+
+        document.getElementById('pred').innerHTML = `
+          <p>Predicted class(NO.1): ${predictedClass}</p>
+          <p>Confidence(NO.1): ${confidencePercentage} %</p>
+        `;
       }
     </script>
   </body>
