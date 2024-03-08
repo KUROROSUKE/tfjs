@@ -9,7 +9,7 @@
   </head>
 
   <body>
-    <p>更新１０</p>
+    <p>更新９</p>
     <input type="file" id="file-input">
     <img id="image-preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc;">
     <input value="Class" type="button" id="button" onclick="run()">
@@ -32,7 +32,6 @@
       })
 
       async function run() {
-        const list = ["ある","ない"]
         const model = await tflite.loadTFLiteModel('https://kurorosuke.github.io/tfjs/model.tflite'); // モデルのURLを指定
         const img = document.getElementById('image-preview');
         const tensor = tf.browser.fromPixels(img)
@@ -45,7 +44,7 @@
         const confidencePercentage = Math.round(confidence * 100 * 100) / 100; // 2桁の精度で切り捨て
 
         document.getElementById('pred').innerHTML = `
-          <p>Predicted class(NO.1): ${list(predictedClass)}</p>
+          <p>Predicted class(NO.1): ${predictedClass}</p>
           <p>Confidence(NO.1): ${confidencePercentage} %</p>
         `;
       }
