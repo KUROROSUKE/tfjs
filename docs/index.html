@@ -15,27 +15,6 @@
     <input type="button" id="button" onclick="run()">
 
     <script>
-      window.onload = async () => {
-      const fileInput = document.getElementById('fileinput');
-      const previewImage = document.getElementById('image');
-        
-      fileInput.onchange = function(event) {
-          const file = event.target.files[0];
-          if (file) {
-              const reader = new FileReader();
-              reader.onload = function(e) {
-                  previewImage.src = e.target.result;
-                  previewImage.style.display = 'block';
-              };
-              reader.readAsDataURL(file);
-          }
-      };
-    
-        const res = await window.fetch("part2.js"); // パスを修正
-        const jscode = await res.text();
-        eval(jscode);
-        }
-
       async function run(){
           const model = await tflite.loadTFLiteModel('./model.tflite');
           const x = tf.browser.fromPixels(document.getElementById('image'), 1).reshape([1, 28, 28, 1]).div(tf.scalar(255));
