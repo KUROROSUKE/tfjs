@@ -9,7 +9,7 @@
   </head>
 
   <body>
-    <p>更新７</p>
+    <p>更新８</p>
     <input type="file" id="file-input">
     <img id="image-preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc;">
     <input config="Class" type="button" id="button" onclick="run()">
@@ -32,7 +32,7 @@
       })
 
       async function run() {
-        const model = await tflite.loadTFLiteModel('model.tflite');
+        const model = await tflite.loadTFLiteModel('https://kurorosuke.github.io/tfjs/model.tflite'); // モデルのURLを指定
         const img = document.getElementById('image-preview');
         const tensor = tf.browser.fromPixels(img)
                           .resizeNearestNeighbor([224, 224])  // 画像を 224x224 にリサイズ
