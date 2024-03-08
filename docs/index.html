@@ -3,17 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tensorflow.js_test</title>
+    <title>画像推論</title>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite/dist/tf-tflite.min.js"></script>
   </head>
 
   <body>
-    <p>更新９</p>
+    <p>更新１０</p>
+    <p>画像を選択してください:</p>
     <input type="file" id="file-input">
-    <img id="image-preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc;">
-    <input value="Class" type="button" id="button" onclick="run()">
-    <p id="pred">結果がここに表示されます</p>
+    <img id="image-preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc; display: none;">
+    <button id="button" onclick="run()">推論実行</button>
+    <div id="result"></div>
 
     <script>
       const fileInput = document.getElementById('file-input');
@@ -32,20 +33,24 @@
       })
 
       async function run() {
-        const model = await tflite.loadTFLiteModel('https://kurorosuke.github.io/tfjs/model.tflite'); // モデルのURLを指定
+        const model = await tflite.loadTFLiteModel('save_data/save_2/model.tflite'); // モデルのロード
         const img = document.getElementById('image-preview');
         const tensor = tf.browser.fromPixels(img)
                           .resizeNearestNeighbor([224, 224])  // 画像を 224x224 にリサイズ
                           .div(tf.scalar(255.0))  // 正規化
                           .expandDims();  // バッチ次元を追加
-        const y = model.predict(tensor);
-        const predictedClass = y.reshape([-1]).argMax().arraySync();
-        const confidence = y.max().arraySync()[0];
+        const output = model.predict(tensor);
+        const outputData = output.dataSync();
+        const predictedClass = outputData.indexOf(Math.max(...outputData)); // 最大値のインデックス取得
+        const confidence = Math.max(...outputData);
         const confidencePercentage = Math.round(confidence * 100 * 100) / 100; // 2桁の精度で切り捨て
 
-        document.getElementById('pred').innerHTML = `
-          <p>Predicted class(NO.1): ${predictedClass}</p>
-          <p>Confidence(NO.1): ${confidencePercentage} %</p>
+        const labels = ["ある", "ない"]; // ラベルのリスト
+        const result = labels[predictedClass];
+
+        document.getElementById('result').innerHTML = `
+          <p>推論結果: ${result}</p>
+          <p>信頼度: ${confidencePercentage}%</p>
         `;
       }
     </script>
