@@ -9,19 +9,32 @@
   </head>
 
   <body>
-    <p>更新１０</p>
+    <p>更新１１</p>
     <input type="file" id="file-input" onchange="previewImage()">
     <img id="image-preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc;">
     <input type="button" id="button" onclick="run()">
 
     <script>
-      ("file-input").on("change", function (e) {
-          var reader = new FileReader();
-          reader.onload = function (e) {
-              ("image").attr("src", e.target.result);
+      window.onload = async () => {
+      const fileInput = document.getElementById('fileinput');
+      const previewImage = document.getElementById('image');
+        
+      fileInput.onchange = function(event) {
+          const file = event.target.files[0];
+          if (file) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                  previewImage.src = e.target.result;
+                  previewImage.style.display = 'block';
+              };
+              reader.readAsDataURL(file);
           }
-          reader.readAsDataURL(e.target.files[0]);
-      });
+      };
+    
+        const res = await window.fetch("part2.js"); // パスを修正
+        const jscode = await res.text();
+        eval(jscode);
+        }
 
       async function run(){
           const model = await tflite.loadTFLiteModel('./model.tflite');
