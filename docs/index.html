@@ -2,35 +2,41 @@
 <html lang="ja">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tensorflow.js_test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite/dist/tf-tflite.min.js"></script>
   </head>
 
   <body>
-    <p>更新２</p>
-    <input type="file" id="file_input" onchange="display()">
+    <p>更新３</p>
+    <input type="file" id="file-input" onchange="display()">
+    <img id="image-preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc;">
     <input type="button" id="button" onclick="run()">
-    <img id="image" alt="選択した画像">
-    <div><img src="sample_5.png" id="input-image"></div>
-    <div>Prediction: <span id="pred"></span></div>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite/dist/tf-tflite.min.js"></script>
 
-    <!-- Place your code in the script tag below. You can also use an external .js file -->
     <script>
-        const imageInput = document.getElementById('file-input');
-        const imagePreview = document.getElementById('image');
-        
-        imageInput.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imagePreview.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                imagePreview.src = "";
+
+        function display() {
+            var preview = document.getElementById('image-preview');
+            var file = document.getElementById('file-input').files[0];
+            var reader = new FileReader();
+          
+            reader.onloadend = function () {
+              preview.innerHTML = '';
+              var img = document.createElement('img');
+              img.src = reader.result;
+              img.style.maxWidth = '100%';
+              img.style.maxHeight = '100%';
+              img.style.border = '1px solid #ccc';
+              preview.appendChild(img);
             }
-        });
+          
+            if (file) {
+              reader.readAsDataURL(file);
+            } else {
+              preview.innerHTML = 'No image selected';
+            }
+          }
 
         async function run(){
             const model = await tflite.loadTFLiteModel('./model.tflite');
