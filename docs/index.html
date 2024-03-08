@@ -6,24 +6,13 @@
     <title>tensorflow.js_test</title>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite/dist/tf-tflite.min.js"></script>
-    <style>
-      /* 追加されたCSS */
-      #pred {
-        opacity: 0;
-        transition: opacity 0.5s ease-in-out;
-      }
-      .show {
-        opacity: 1;
-      }
-    </style>
   </head>
 
   <body>
     <input type="file" id="file-input">
     <img id="image-preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc;">
-    <p></p>
+    <p id="pred">推論結果がここに表示されます</p>
     <input value="分類を実行" type="button" id="button" onclick="run()">
-    <p id="pred">結果がここに表示されます</p>
     
     <script>
       const fileInput = document.getElementById('file-input');
@@ -59,7 +48,6 @@
         resultElement.innerHTML = `
           <p>分類結果: ${list[predictedClass]}</p>
         `;
-        resultElement.classList.add('show'); // フェードインアニメーションを適用
       }
     </script>
   </body>
