@@ -35,7 +35,7 @@
       async function run() {
         resultElement.textContent = '推論中...'; // 推論中のメッセージを表示
         button.disabled = true; // ボタンを無効化して非表示にする
-        const model = await tflite.loadTFLiteModel('https://kurorosuke.github.io/tfjs/model3.tflite'); // モデルのURLを指定
+        const model = await tflite.loadTFLiteModel('https://kurorosuke.github.io/tfjs/model4.tflite'); // モデルのURLを指定
         const img = document.getElementById('image-preview');
         const tensor = tf.browser.fromPixels(img)
                           .resizeNearestNeighbor([224, 224])  // 画像を 224x224 にリサイズ
