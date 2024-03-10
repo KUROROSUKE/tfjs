@@ -12,12 +12,14 @@
     <input type="file" id="file-input">
     <img id="image-preview" style="max-width: 300px; max-height: 300px; border: 1px solid #ccc;">
     <p id="pred">推論結果がここに表示されます</p>
+    <p id="confidence">信頼度: </p>
     <input value="分類を実行" type="button" id="button" onclick="run()">
     
     <script>
       const fileInput = document.getElementById('file-input');
       const previewImage = document.getElementById('image-preview');
       const resultElement = document.getElementById('pred'); // 結果表示の要素
+      const confidenceElement = document.getElementById('confidence'); // 信頼度表示の要素
       const button = document.getElementById('button'); // ボタン要素
 
       fileInput.addEventListener('change', function(event) {
@@ -50,6 +52,7 @@
         resultElement.innerHTML = `
           <p>分類結果: ${list[predictedClass]}</p>
         `;
+        confidenceElement.textContent = `信頼度: ${confidencePercentage}%`;
         button.disabled = false; // 推論が終了したらボタンを再び有効にする
       }
     </script>
